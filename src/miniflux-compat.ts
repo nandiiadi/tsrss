@@ -1,15 +1,23 @@
 import { Hono } from 'hono'
-import type { Env } from './index'
+import type { D1Database } from '@cloudflare/workers-types'
 
-export const miniflux = new Hono<{ Bindings: Env }>()
+// Local env type — avoids circular import with index.ts
+interface CompatEnv {
+  DB: D1Database
+  SESSIONS: KVNamespace
+  TSRSS_PASSWORD?: string
+  TSRSS_AUTH_MODE?: string
+}
+
+export const miniflux = new Hono<{ Bindings: CompatEnv }>()
 
 // ── Auth helper ──────────────────────────────────────────────────────────────
 
 function verifyAuth(c: any): boolean {
-  const password = (c.env as Env).TSRSS_PASSWORD
+  const password = c.env.TSRSS_PASSWORD as string | undefined
   if (!password) return true
 
-  // X-Auth-Token header (API token mode)
+  // X-Auth-Token header
   const token = c.req.header('X-Auth-Token')
   if (token === password) return true
 
@@ -173,19 +181,18 @@ miniflux.put('/v1/entries/:id/bookmark', async (c) => {
 
 async function listEntries(c: any, feedId: number | null) {
   const url = new URL(c.req.url)
-  const status   = url.searchParams.get('status')      // read | unread | starred
-  const limit    = Math.min(Number(url.searchParams.get('limit')  || 100), 1000)
-  const offset   = Number(url.searchParams.get('offset') || 0)
+  const status    = url.searchParams.get('status')
+  const limit     = Math.min(Number(url.searchParams.get('limit')  || 100), 1000)
+  const offset    = Number(url.searchParams.get('offset') || 0)
   const direction = url.searchParams.get('direction') === 'asc' ? 'ASC' : 'DESC'
   const categoryId = url.searchParams.get('category_id')
 
   let where = "f.user_id = 'anonymous'"
   const params: any[] = []
 
-  if (feedId !== null) { where += ' AND a.feed_id = ?'; params.push(feedId) }
-  if (categoryId)      { where += ' AND f.category_id = ?'; params.push(Number(categoryId)) }
-
-  if (status === 'unread')  where += ' AND COALESCE(s.is_read, 0) = 0'
+  if (feedId !== null)  { where += ' AND a.feed_id = ?';      params.push(feedId) }
+  if (categoryId)       { where += ' AND f.category_id = ?';  params.push(Number(categoryId)) }
+  if (status === 'unread')       where += ' AND COALESCE(s.is_read, 0) = 0'
   else if (status === 'read')    where += ' AND s.is_read = 1'
   else if (status === 'starred') where += ' AND s.is_starred = 1'
 
