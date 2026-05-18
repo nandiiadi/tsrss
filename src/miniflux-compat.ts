@@ -201,7 +201,7 @@ async function listEntries(c: any, feedId: number | null) {
     JOIN feeds f ON f.id = a.feed_id
     LEFT JOIN article_states s ON s.article_id = a.id AND s.user_id = 'anonymous'
     WHERE ${where}
-  `).bind(...params).first() as Promise<{ count: number } | null>
+  `).bind(...params).first()) as { count: number } | null
 
   const rows = await c.env.DB.prepare(`
     SELECT a.*, f.title as feed_title, f.site_url as feed_site_url, f.url as feed_url,
