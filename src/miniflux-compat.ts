@@ -180,6 +180,7 @@ miniflux.put('/v1/entries/:id/bookmark', async (c) => {
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 async function listEntries(c: any, feedId: number | null) {
+  const db = c.env.DB as any
   const url = new URL(c.req.url)
   const status    = url.searchParams.get('status')
   const limit     = Math.min(Number(url.searchParams.get('limit')  || 100), 1000)
@@ -196,14 +197,14 @@ async function listEntries(c: any, feedId: number | null) {
   else if (status === 'read')    where += ' AND s.is_read = 1'
   else if (status === 'starred') where += ' AND s.is_starred = 1'
 
-  const countRow = await c.env.DB.prepare(`
+  const countRow = await db.prepare(`
     SELECT COUNT(*) as count FROM articles a
     JOIN feeds f ON f.id = a.feed_id
     LEFT JOIN article_states s ON s.article_id = a.id AND s.user_id = 'anonymous'
     WHERE ${where}
-  `).bind(...params).first()) as { count: number } | null
+  `).bind(...params).first()
 
-  const rows = await c.env.DB.prepare(`
+  const rows = await db.prepare(`
     SELECT a.*, f.title as feed_title, f.site_url as feed_site_url, f.url as feed_url,
       COALESCE(s.is_read, 0) as is_read, COALESCE(s.is_starred, 0) as is_starred
     FROM articles a
