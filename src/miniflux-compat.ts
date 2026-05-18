@@ -241,7 +241,9 @@ function feedToMiniflux(f: any) {
     title: f.title,
     site_url: f.site_url || '',
     feed_url: f.url,
+    description: f.description || '',
     checked_at: f.last_updated || f.created_at,
+    next_check_at: '0001-01-01T00:00:00Z',
     etag_header: f.etag || '',
     last_modified_header: f.last_modified || '',
     parsing_error_count: f.error_count || 0,
@@ -250,14 +252,46 @@ function feedToMiniflux(f: any) {
     blocklist_rules: '', keeplist_rules: '', user_agent: '',
     username: '', password: '', disabled: false,
     ignore_http_cache: false, fetch_via_proxy: false,
+    hide_globally: false, no_media_player: false,
+    disable_http2: false, allow_self_signed_certificates: false,
+    ignore_entry_updates: false, cookie: '',
+    urlrewrite_rules: '', block_filter_entry_rules: '',
+    keep_filter_entry_rules: '', apprise_service_urls: '',
+    webhook_url: '', ntfy_enabled: false, ntfy_priority: 0,
+    ntfy_topic: '', pushover_enabled: false, pushover_priority: 0,
+    proxy_url: '',
     category: f.category_id
-      ? { id: f.category_id, title: f.category_title || 'Uncategorized', user_id: 1 }
-      : { id: 0, title: 'Uncategorized', user_id: 1 },
+      ? { id: f.category_id, title: f.category_title || 'Uncategorized', user_id: 1, hide_globally: false }
+      : { id: 0, title: 'Uncategorized', user_id: 1, hide_globally: false },
     icon: null,
   }
 }
 
 function articleToMiniflux(a: any) {
+  const feed = {
+    id: a.feed_id, user_id: 1,
+    title: a.feed_title || '',
+    site_url: a.feed_site_url || '',
+    feed_url: a.feed_url || '',
+    description: '', checked_at: '',
+    next_check_at: '0001-01-01T00:00:00Z',
+    etag_header: '', last_modified_header: '',
+    parsing_error_count: 0, parsing_error_message: '',
+    scraper_rules: '', rewrite_rules: '', crawler: false,
+    blocklist_rules: '', keeplist_rules: '', user_agent: '',
+    username: '', password: '', disabled: false,
+    ignore_http_cache: false, fetch_via_proxy: false,
+    hide_globally: false, no_media_player: false,
+    disable_http2: false, allow_self_signed_certificates: false,
+    ignore_entry_updates: false, cookie: '',
+    urlrewrite_rules: '', block_filter_entry_rules: '',
+    keep_filter_entry_rules: '', apprise_service_urls: '',
+    webhook_url: '', ntfy_enabled: false, ntfy_priority: 0,
+    ntfy_topic: '', pushover_enabled: false, pushover_priority: 0,
+    proxy_url: '',
+    category: { id: 0, title: 'Uncategorized', user_id: 1, hide_globally: false },
+    icon: null,
+  }
   return {
     id: a.id,
     user_id: 1,
@@ -270,17 +304,13 @@ function articleToMiniflux(a: any) {
     hash: a.guid || String(a.id),
     published_at: a.published_at || a.created_at,
     created_at: a.created_at,
+    changed_at: a.created_at,
     status: a.is_read ? 'read' : 'unread',
     share_code: '',
     starred: Boolean(a.is_starred),
-    reading_time: 0,
-    enclosures: null,
-    feed: {
-      id: a.feed_id, user_id: 1,
-      title: a.feed_title || '',
-      site_url: a.feed_site_url || '',
-      feed_url: a.feed_url || '',
-    },
+    reading_time: 1,
+    enclosures: [],
+    feed,
     tags: [],
   }
 }
