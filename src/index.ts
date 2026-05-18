@@ -19,6 +19,7 @@ import { handleRefresh } from './handlers/refresh'
 import { handleExportOPML, handleImportOPML } from './handlers/opml'
 import { handleReorderFeeds } from './handlers/feeds-reorder'
 import { refreshAllFeeds, purgeOldArticles } from './feed/refresh'
+import { miniflux } from './miniflux-compat'
 
 export type Env = DBEnv & {
   SESSIONS: KVNamespace
@@ -30,7 +31,7 @@ export type Env = DBEnv & {
 }
 
 const app = new Hono<{ Bindings: Env }>()
-
+app.route('/', miniflux)
 async function logCronRun(env: Env, source: string, feedsChecked: number, articlesFound: number) {
   try {
     await env.DB.prepare(
@@ -61,7 +62,8 @@ app.use('*', async (c, next) => {
     path === '/favicon.ico' ||
     path.startsWith('/apple-touch-icon') ||
     path === '/api/status' ||
-    path === '/api/debug'
+    path === '/api/debug' ||
+    path.startsWith('/v1/')
   ) {
     return next()
   }
