@@ -10,12 +10,12 @@ assets = { directory = "./src/public", binding = "ASSETS" }
 [[d1_databases]]
 binding = "DB"
 database_name = "tsrss-db"
-database_id = "__D1_DATABASE_ID__"
+database_id = "aca3d3e5-b842-4246-8f79-d84d6177c5bb"
 
 # KV namespace for password auth sessions
 [[kv_namespaces]]
 binding = "SESSIONS"
-id = "__KV_NAMESPACE_ID__"
+id = "ddf1804eb6f94302a293772619e7a5a9"
 
 # Cron trigger: refresh all feeds every 30 minutes
 [triggers]
@@ -35,11 +35,11 @@ name = "tsrss-preview"
 [[env.preview.d1_databases]]
 binding = "DB"
 database_name = "tsrss-preview-db"
-database_id = "__PREVIEW_D1_DATABASE_ID__"
+database_id = "aca3d3e5-b842-4246-8f79-d84d6177c5bb"
 
 [[env.preview.kv_namespaces]]
 binding = "SESSIONS"
-id = "__PREVIEW_KV_NAMESPACE_ID__"
+id = "ddf1804eb6f94302a293772619e7a5a9"
 
 # Preview cron disabled — preview is for manual testing only
 [env.preview.triggers]
