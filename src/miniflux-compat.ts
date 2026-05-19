@@ -275,6 +275,7 @@ miniflux.delete('/v1/feeds/:id', async (c) => {
   await c.env.DB.prepare("DELETE FROM feeds WHERE id = ? AND user_id = 'anonymous'").bind(id).run()
   return new Response(null, { status: 204 })
 })
+
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 async function listEntries(c: any, feedId: number | null) {
