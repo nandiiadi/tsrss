@@ -196,6 +196,42 @@ miniflux.put('/v1/entries/:id/bookmark', async (c) => {
 
   return new Response(null, { status: 204 })
 })
+// ── GET /v1/version ──────────────────────────────────────────────────────────
+
+miniflux.get('/v1/version', (c) => {
+  return c.json({
+    version: '2.2.0',
+    commit: 'tsrss-compat',
+    build_date: '2026-01-01T00:00:00Z',
+  })
+})
+
+// ── GET /v1/feeds/counters ────────────────────────────────────────────────────
+
+miniflux.get('/v1/feeds/counters', async (c) => {
+  if (!verifyAuth(c)) return unauth(c)
+
+  const rows = await c.env.DB.prepare(`
+    SELECT a.feed_id,
+      SUM(CASE WHEN COALESCE(s.is_read, 0) = 0 THEN 1 ELSE 0 END) as unread,
+      SUM(CASE WHEN s.is_read = 1 THEN 1 ELSE 0 END) as read_count
+    FROM articles a
+    JOIN feeds f ON f.id = a.feed_id
+    LEFT JOIN article_states s ON s.article_id = a.id AND s.user_id = 'anonymous'
+    WHERE f.user_id = 'anonymous'
+    GROUP BY a.feed_id
+  `).all<{ feed_id: number; unread: number; read_count: number }>()
+
+  const unreads: Record<string, number> = {}
+  const reads: Record<string, number> = {}
+
+  for (const row of rows.results || []) {
+    unreads[String(row.feed_id)] = row.unread || 0
+    reads[String(row.feed_id)]   = row.read_count || 0
+  }
+
+  return c.json({ reads, unreads })
+})
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
