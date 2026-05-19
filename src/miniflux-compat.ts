@@ -234,7 +234,47 @@ miniflux.put('/v1/entries/:id/bookmark', async (c) => {
 
   return new Response(null, { status: 204 })
 })
+// ── POST /v1/categories ───────────────────────────────────────────────────────
 
+miniflux.post('/v1/categories', async (c) => {
+  if (!verifyAuth(c)) return unauth(c)
+  const { title } = await c.req.json<{ title: string }>()
+  const now = new Date().toISOString()
+  const result = await c.env.DB.prepare(`
+    INSERT INTO categories (user_id, title, created_at, sort_order)
+    VALUES ('anonymous', ?, ?, 0)
+  `).bind(title, now).run()
+  const row = await c.env.DB.prepare(
+    "SELECT id, title FROM categories WHERE rowid = last_insert_rowid()"
+  ).first<{ id: number; title: string }>()
+  return c.json({ id: row?.id, title: row?.title, user_id: 1, hide_globally: false }, 201)
+})
+
+// ── POST /v1/feeds ────────────────────────────────────────────────────────────
+
+miniflux.post('/v1/feeds', async (c) => {
+  if (!verifyAuth(c)) return unauth(c)
+  const body = await c.req.json<{ feed_url: string; title?: string; category_id?: number }>()
+  const now = new Date().toISOString()
+  await c.env.DB.prepare(`
+    INSERT INTO feeds (user_id, url, title, site_url, description, created_at, sort_order, etag, last_modified, error_count, category_id)
+    VALUES ('anonymous', ?, ?, '', '', ?, 0, '', '', 0, ?)
+    ON CONFLICT (user_id, url) DO NOTHING
+  `).bind(body.feed_url, body.title || body.feed_url, now, body.category_id || null).run()
+  const row = await c.env.DB.prepare(
+    "SELECT * FROM feeds WHERE user_id = 'anonymous' AND url = ?"
+  ).bind(body.feed_url).first<any>()
+  return c.json(feedToMiniflux(row), 201)
+})
+
+// ── DELETE /v1/feeds/:id ──────────────────────────────────────────────────────
+
+miniflux.delete('/v1/feeds/:id', async (c) => {
+  if (!verifyAuth(c)) return unauth(c)
+  const id = Number(c.req.param('id'))
+  await c.env.DB.prepare("DELETE FROM feeds WHERE id = ? AND user_id = 'anonymous'").bind(id).run()
+  return new Response(null, { status: 204 })
+})
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 async function listEntries(c: any, feedId: number | null) {
