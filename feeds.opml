@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>TSRSS Export</title>
+  </head>
+  <body>
+    <outline text="Github Searches" title="Github Searches">
+      <outline text="GitHub IPTV Topic Repositories" title="GitHub IPTV Topic Repositories" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=ip_tv" htmlUrl=""></outline>
+      <outline text="GitHub M3U Topic Repositories" title="GitHub M3U Topic Repositories" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=m3u" htmlUrl=""></outline>
+      <outline text="GitHub - Prompt Engineering (Recently Updated)" title="GitHub - Prompt Engineering (Recently Updated)" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=git_pmpt" htmlUrl=""></outline>
+      <outline text="GitHub - RSS Repositories (New Only)" title="GitHub - RSS Repositories (New Only)" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=git_rsstest" htmlUrl=""></outline>
+      <outline text="GitHub - RSS Repositories (Recently Updated)" title="GitHub - RSS Repositories (Recently Updated)" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=git_rss" htmlUrl=""></outline>
+      <outline text="GitHub Tunneling Topic Repositories" title="GitHub Tunneling Topic Repositories" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=tunneling" htmlUrl=""></outline>
+      <outline text="hiifong Starred Repositories" title="hiifong Starred Repositories" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=starlist" htmlUrl=""></outline>
+      <outline text="GitHub All Languages Daily Trending" title="GitHub All Languages Daily Trending" type="rss" xmlUrl="https://raw.githubusercontent.com/isboyjc/github-trending-api/main/data/daily/all.xml" htmlUrl=""></outline>
+      <outline text="GitHub: Google Apps Script Repositories" title="GitHub: Google Apps Script Repositories" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=gitgas" htmlUrl=""></outline>
+    </outline>
+    <outline text="AI" title="AI">
+      <outline text="4thWave AI — All Areas (Aggregated)" title="4thWave AI — All Areas (Aggregated)" type="rss" xmlUrl="https://github.com/4thWaveAI/feeds/raw/refs/heads/main/feeds/all.xml" htmlUrl=""></outline>
+      <outline text="AltSociety – New Prompts" title="AltSociety – New Prompts" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=altsociety" htmlUrl=""></outline>
+      <outline text="Horizon Daily Summaries" title="Horizon Daily Summaries" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=horizon" htmlUrl=""></outline>
+      <outline text="Hugo Tunius - Blog" title="Hugo Tunius - Blog" type="rss" xmlUrl="https://hugotunius.se/feed.xml" htmlUrl=""></outline>
+      <outline text="Philosophy Publics" title="Philosophy Publics" type="rss" xmlUrl="https://philosophypublics.substack.com/feed" htmlUrl=""></outline>
+      <outline text="arXiv Query: search_query=cat:cs.AI&amp;id_list=&amp;start=0&amp;max_results=100" title="arXiv Query: search_query=cat:cs.AI&amp;id_list=&amp;start=0&amp;max_results=100" type="rss" xmlUrl="https://export.arxiv.org/api/query?search_query=cat:cs.AI&amp;sortBy=submittedDate&amp;sortOrder=descending&amp;max_results=100" htmlUrl=""></outline>
+    </outline>
+    <outline text="Comments" title="Comments">
+      <outline text="Moneycontrol Message Board - Latest" title="Moneycontrol Message Board - Latest" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=mcmes" htmlUrl=""></outline>
+    </outline>
+    <outline text="Emails" title="Emails">
+      <outline text="E-mails" title="E-mails" type="rss" xmlUrl="https://kill-the-newsletter.com/feeds/e8mioircf8tvnn1r2hf2.xml" htmlUrl=""></outline>
+    </outline>
+    <outline text="Hacker" title="Hacker">
+      <outline text="Get Into PC" title="Get Into PC" type="rss" xmlUrl="https://getintopc.com/feed/" htmlUrl=""></outline>
+      <outline text="Hacker News Top Stories" title="Hacker News Top Stories" type="rss" xmlUrl="https://rzagreb.github.io/hackernews-top-rss/feeds/hacker-news.xml" htmlUrl=""></outline>
+      <outline text="HuggingFace Spaces: PROMPT (Newest)" title="HuggingFace Spaces: PROMPT (Newest)" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=spaces" htmlUrl=""></outline>
+    </outline>
+    <outline text="IPO Deep Research – Substack" title="IPO Deep Research – Substack">
+      <outline text="Updates" title="Updates" type="rss" xmlUrl="https://ajayshah.substack.com/feed" htmlUrl=""></outline>
+      <outline text="AlphaWealth Avenues" title="AlphaWealth Avenues" type="rss" xmlUrl="https://manthanrastogi.substack.com/feed" htmlUrl=""></outline>
+      <outline text="Capital Calculus 2.0" title="Capital Calculus 2.0" type="rss" xmlUrl="https://thecapitalcalculus.substack.com/feed" htmlUrl=""></outline>
+      <outline text="Raghav Behani | Money &amp; Markets" title="Raghav Behani | Money &amp; Markets" type="rss" xmlUrl="https://raghavbehani.substack.com/feed" htmlUrl=""></outline>
+      <outline text="ajaykumar&apos;s Substack" title="ajaykumar&apos;s Substack" type="rss" xmlUrl="https://indiaipo11.substack.com/feed" htmlUrl=""></outline>
+      <outline text="Nifty Trader - IPO News" title="Nifty Trader - IPO News" type="rss" xmlUrl="https://www.niftytrader.in/content/rss-feed/ipo-news/?_gl=1*57cy8q*_ga*YW1wLU9mZDEzcV9iRTNfWnoxVHd6dEhTTG5KLWtrNnV1aXhvVDNmNHNJS013NmlTZVV6MUNjVy1mN2F0QnhRZ2xkUkQ.*_ga_T227ZMN3SL*MTc2NTcwNTMyMC4xLjEuMTc2NTcwNTMyMC4wLjAuMA.." htmlUrl=""></outline>
+      <outline text="Nirvesh Wisdom 🧘 Investment Monk" title="Nirvesh Wisdom 🧘 Investment Monk" type="rss" xmlUrl="https://nirveshwisdom.substack.com/feed" htmlUrl=""></outline>
+      <outline text="The Painted Stork" title="The Painted Stork" type="rss" xmlUrl="https://www.thepaintedstork.com/feed" htmlUrl=""></outline>
+    </outline>
+    <outline text="LinkedIn Discovery (Google News – Quarantine)" title="LinkedIn Discovery (Google News – Quarantine)">
+      <outline text="&quot;site:linkedin.com/pulse (&quot;business model&quot; OR &quot;financial analysis&quot; OR &quot;industry outlook&quot;) when:7d&quot; - Google News" title="&quot;site:linkedin.com/pulse (&quot;business model&quot; OR &quot;financial analysis&quot; OR &quot;industry outlook&quot;) when:7d&quot; - Google News" type="rss" xmlUrl="https://news.google.com/rss/search?q=site:linkedin.com/pulse+(%22business+model%22+OR+%22financial+analysis%22+OR+%22industry+outlook%22)+when:7d&amp;hl=en-IN&amp;gl=IN&amp;ceid=IN:en" htmlUrl=""></outline>
+      <outline text="&quot;site:linkedin.com/pulse (stock analysis OR company analysis OR investment thesis) India when:3d&quot; - Google News" title="&quot;site:linkedin.com/pulse (stock analysis OR company analysis OR investment thesis) India when:3d&quot; - Google News" type="rss" xmlUrl="https://news.google.com/rss/search?q=site:linkedin.com/pulse+(stock+analysis+OR+company+analysis+OR+investment+thesis)+India+when:3d&amp;hl=en-IN&amp;gl=IN&amp;ceid=IN:en" htmlUrl=""></outline>
+      <outline text="&quot;site:linkedin.com/pulse (&quot;indian stock market&quot; OR nifty OR sensex) when:7d&quot; - Google News" title="&quot;site:linkedin.com/pulse (&quot;indian stock market&quot; OR nifty OR sensex) when:7d&quot; - Google News" type="rss" xmlUrl="https://news.google.com/rss/search?q=site:linkedin.com/pulse+(&quot;indian%20stock%20market&quot;%20OR%20nifty%20OR%20sensex)%20when:7d&amp;hl=en-IN&amp;gl=IN&amp;ceid=IN:en" htmlUrl=""></outline>
+    </outline>
+    <outline text="Major Financial News Portals" title="Major Financial News Portals">
+      <outline text="Latest Share Market News, Sensex, Nifty, BSE, NSE Today | The HinduBusinessLine" title="Latest Share Market News, Sensex, Nifty, BSE, NSE Today | The HinduBusinessLine" type="rss" xmlUrl="https://www.thehindubusinessline.com/markets/feeder/default.rss" htmlUrl=""></outline>
+      <outline text="Markets-Economic Times" title="Markets-Economic Times" type="rss" xmlUrl="https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms?from=mdr" htmlUrl=""></outline>
+      <outline text="mint - markets" title="mint - markets" type="rss" xmlUrl="https://www.livemint.com/rss/markets" htmlUrl=""></outline>
+    </outline>
+    <outline text="Malayalam News" title="Malayalam News">
+      <outline text="Deshabhimani Latest" title="Deshabhimani Latest" type="rss" xmlUrl="https://anyrss-worker.amala1991kprm.workers.dev/feed?id=desha" htmlUrl=""></outline>
+      <outline text="MediaOne" title="MediaOne" type="rss" xmlUrl="https://anyrss-worker.amala1991kprm.workers.dev/feed?id=media" htmlUrl=""></outline>
+      <outline text="Latest News" title="Latest News" type="rss" xmlUrl="https://www.manoramaonline.com/news/latest-news.feeds.rss.xml" htmlUrl=""></outline>
+      <outline text="Mathrubhumi" title="Mathrubhumi" type="rss" xmlUrl="https://www.mathrubhumi.com/sitemaps/mathrubhumi/rss" htmlUrl=""></outline>
+    </outline>
+    <outline text="Market News (Controlled)" title="Market News (Controlled)">
+      <outline text="Finance – Eduinvesting" title="Finance – Eduinvesting" type="rss" xmlUrl="https://eduinvesting.in/category/finance/feed/" htmlUrl=""></outline>
+      <outline text="Finshots" title="Finshots" type="rss" xmlUrl="https://finshots.in/rss/" htmlUrl=""></outline>
+      <outline text="InvestyWise" title="InvestyWise" type="rss" xmlUrl="https://www.investywise.com/feed/" htmlUrl=""></outline>
+      <outline text="Market News – Discount Brokers in India – Samco Securities" title="Market News – Discount Brokers in India – Samco Securities" type="rss" xmlUrl="https://www.samco.in/knowledge-center/article-categories/market-news/feed/" htmlUrl=""></outline>
+      <outline text="Nifty Trader - Stock Market News" title="Nifty Trader - Stock Market News" type="rss" xmlUrl="https://www.niftytrader.in/content/rss-feed/stock-market-news/?_gl=1*57cy8q*_ga*YW1wLU9mZDEzcV9iRTNfWnoxVHd6dEhTTG5KLWtrNnV1aXhvVDNmNHNJS013NmlTZVV6MUNjVy1mN2F0QnhRZ2xkUkQ.*_ga_T227ZMN3SL*MTc2NTcwNTMyMC4xLjEuMTc2NTcwNTMyMC4wLjAuMA.." htmlUrl=""></outline>
+      <outline text="Power Line Magazine" title="Power Line Magazine" type="rss" xmlUrl="https://powerline.net.in/feed/" htmlUrl=""></outline>
+      <outline text="pv magazine India" title="pv magazine India" type="rss" xmlUrl="https://www.pv-magazine-india.com/feed/" htmlUrl=""></outline>
+      <outline text="Trade Brains" title="Trade Brains" type="rss" xmlUrl="https://tradebrains.in/feed/" htmlUrl=""></outline>
+      <outline text="Perplexity" title="Perplexity" type="rss" xmlUrl="https://rss.diffbot.com/atom?url=https://www.perplexity.ai/finance" htmlUrl=""></outline>
+    </outline>
+    <outline text="Platform Research Blogs" title="Platform Research Blogs">
+      <outline text="MarketsMojo Recent Scripts" title="MarketsMojo Recent Scripts" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=mojosenti" htmlUrl=""></outline>
+      <outline text="MarketsMojo Premium Alerts" title="MarketsMojo Premium Alerts" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=mojonews" htmlUrl=""></outline>
+      <outline text="MSI Posts Archive | MarketSmith India Blog" title="MSI Posts Archive | MarketSmith India Blog" type="rss" xmlUrl="https://msiblog.in/msipost/feed/" htmlUrl=""></outline>
+      <outline text="A Comprehensive Guide to Money Transfer, Recharges, Bill Payments and Other Digital Payments | Paytm Blog" title="A Comprehensive Guide to Money Transfer, Recharges, Bill Payments and Other Digital Payments | Paytm Blog" type="rss" xmlUrl="https://paytm.com/blog/rssfeed/" htmlUrl=""></outline>
+      <outline text="Best Stock Market Blogs &amp; Investment Insights | Equentis" title="Best Stock Market Blogs &amp; Investment Insights | Equentis" type="rss" xmlUrl="https://www.equentis.com/blog/feed/" htmlUrl=""></outline>
+      <outline text="Important exchange and trading circulars curated by Zerodha" title="Important exchange and trading circulars curated by Zerodha" type="rss" xmlUrl="https://zerodha.com/marketintel/circulars/?format=xml" htmlUrl=""></outline>
+    </outline>
+    <outline text="Science" title="Science">
+      <outline text="Articles Feed" title="Articles Feed" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=article_bucket" htmlUrl=""></outline>
+      <outline text="Latest Newsletter" title="Latest Newsletter" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=newsletter_bucket" htmlUrl=""></outline>
+    </outline>
+    <outline text="Self Host" title="Self Host">
+      <outline text="Awesome-selfhostedGo" title="Awesome-selfhostedGo" type="rss" xmlUrl="https://anyrss-worker.amala1991kprm.workers.dev/feed?id=selfgoawesm" htmlUrl=""></outline>
+      <outline text="Go Digest" title="Go Digest" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=godigest" htmlUrl=""></outline>
+      <outline text="AI-curated Homelab" title="AI-curated Homelab" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=homelab" htmlUrl=""></outline>
+      <outline text="FMHY blog" title="FMHY blog" type="rss" xmlUrl="https://fmhy.net/feed.rss" htmlUrl=""></outline>
+    </outline>
+    <outline text="Social" title="Social">
+      <outline text="Dr Vismaya VR ✨Enigma✨ / @Vismaya9999" title="Dr Vismaya VR ✨Enigma✨ / @Vismaya9999" type="rss" xmlUrl="https://nitter.net/Vismaya9999/rss" htmlUrl=""></outline>
+      <outline text="Instagram - @hruthika.s.nair" title="Instagram - @hruthika.s.nair" type="rss" xmlUrl="https://qgesqcymfpqykxgkrxiu.supabase.co/functions/v1/serve-feed?id=28ea6a32-1977-44c7-9d2b-608124aad3fc" htmlUrl=""></outline>
+    </outline>
+    <outline text="Tamil" title="Tamil">
+      <outline text="Kadhai Alai Tamil Audiobooks" title="Kadhai Alai Tamil Audiobooks" type="rss" xmlUrl="https://anchor.fm/s/6384304c/podcast/rss" htmlUrl=""></outline>
+      <outline text="Kadhai Osai - Tamil Audiobooks" title="Kadhai Osai - Tamil Audiobooks" type="rss" xmlUrl="https://anchor.fm/s/cf2ac40/podcast/rss" htmlUrl=""></outline>
+      <outline text="Sanga Ilakkiya Kadhaigal with Sidhikakannan" title="Sanga Ilakkiya Kadhaigal with Sidhikakannan" type="rss" xmlUrl="https://anchor.fm/s/24945bc8/podcast/rss" htmlUrl=""></outline>
+      <outline text="Thiyagu Chronicles - A Tamil Podcast" title="Thiyagu Chronicles - A Tamil Podcast" type="rss" xmlUrl="https://anchor.fm/s/20684168/podcast/rss" htmlUrl=""></outline>
+      <outline text="கவிதை – சொல்வனம் | இதழ் 366 | 10 மே 2026" title="கவிதை – சொல்வனம் | இதழ் 366 | 10 மே 2026" type="rss" xmlUrl="https://solvanam.com/category/%e0%ae%95%e0%ae%b5%e0%ae%bf%e0%ae%a4%e0%af%88/feed/" htmlUrl=""></outline>
+      <outline text="சொல்வனம் | இதழ் 366 | 10 மே 2026" title="சொல்வனம் | இதழ் 366 | 10 மே 2026" type="rss" xmlUrl="https://solvanam.com/feed/" htmlUrl=""></outline>
+    </outline>
+    <outline text="Test" title="Test">
+      <outline text="Capital Market Company Research" title="Capital Market Company Research" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=capitalresear" htmlUrl=""></outline>
+      <outline text="Liquide Blog" title="Liquide Blog" type="rss" xmlUrl="https://blog.liquide.life/rss/" htmlUrl=""></outline>
+      <outline text="Moneycontrol Broker Research - Stock Ideas" title="Moneycontrol Broker Research - Stock Ideas" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=m_controlresearch" htmlUrl=""></outline>
+      <outline text="Multibagg Market Pulse" title="Multibagg Market Pulse" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=multibagg" htmlUrl=""></outline>
+      <outline text="Trade Brains Research" title="Trade Brains Research" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=tradebrains" htmlUrl=""></outline>
+      <outline text="Upstox Market News - Earnings" title="Upstox Market News - Earnings" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=upstox_live" htmlUrl=""></outline>
+      <outline text="Capital Market Live News" title="Capital Market Live News" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=capitalmarket" htmlUrl=""></outline>
+      <outline text="Markets Mojo News" title="Markets Mojo News" type="rss" xmlUrl="https://anyrss-worker.amala1991kprm.workers.dev/feed?id=marketsmojo" htmlUrl=""></outline>
+      <outline text="StockWatch Key Events" title="StockWatch Key Events" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=stockwatch" htmlUrl=""></outline>
+      <outline text="Trendlyne Latest Market News" title="Trendlyne Latest Market News" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=trendlyne" htmlUrl=""></outline>
+      <outline text="Whalesbook Financial News" title="Whalesbook Financial News" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=whalesbooknews" htmlUrl=""></outline>
+      <outline text="ScanX Latest News" title="ScanX Latest News" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=scanx" htmlUrl=""></outline>
+    </outline>
+    <outline text="Truecopy Think" title="Truecopy Think">
+      <outline text="Truecopy Think - Entertainment" title="Truecopy Think - Entertainment" type="rss" xmlUrl="https://gist.githubusercontent.com/amalakprm/b5353af97344183bbcfb4802465cc552/raw/truecopy_entertainment.xml" htmlUrl=""></outline>
+      <outline text="Truecopy Think" title="Truecopy Think" type="rss" xmlUrl="https://gist.githubusercontent.com/amalakprm/b5353af97344183bbcfb4802465cc552/raw/truecopy_feed.xml" htmlUrl=""></outline>
+      <outline text="Truecopy Think - Literature" title="Truecopy Think - Literature" type="rss" xmlUrl="https://gist.githubusercontent.com/amalakprm/b5353af97344183bbcfb4802465cc552/raw/truecopy_literature.xml" htmlUrl=""></outline>
+      <outline text="Truecopy Think - Media" title="Truecopy Think - Media" type="rss" xmlUrl="https://gist.githubusercontent.com/amalakprm/b5353af97344183bbcfb4802465cc552/raw/truecopy_media.xml" htmlUrl=""></outline>
+      <outline text="Truecopy Think - Series" title="Truecopy Think - Series" type="rss" xmlUrl="https://gist.githubusercontent.com/amalakprm/b5353af97344183bbcfb4802465cc552/raw/truecopy_series.xml" htmlUrl=""></outline>
+    </outline>
+    <outline text="YouTube" title="YouTube">
+      <outline text="Two Minute Papers" title="Two Minute Papers" type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCbfYPyITQ-7l4upoX8nvctg" htmlUrl=""></outline>
+      <outline text="Deployed-AI" title="Deployed-AI" type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCjtB9OyQZzFRRlzH-hH_vWQ" htmlUrl=""></outline>
+      <outline text="विश्व शेयर बाजार" title="विश्व शेयर बाजार" type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCV2ijYej1lfJq7UJNcFqZ2w" htmlUrl=""></outline>
+      <outline text="All India Radio Thiruvananthapuram" title="All India Radio Thiruvananthapuram" type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCdQbBWqPjvHA0pBAWULMZaQ" htmlUrl=""></outline>
+    </outline>
+    <outline text="extra2" title="extra2">
+      <outline text="Communications of the ACM" title="Communications of the ACM" type="rss" xmlUrl="https://raw.githubusercontent.com/gqcao/rss_bot/refs/heads/main/channels/cacm_magazine.xml" htmlUrl=""></outline>
+      <outline text="Curated RSS Blog" title="Curated RSS Blog" type="rss" xmlUrl="https://novaclawbot.github.io/CuratedRSS/atom.xml" htmlUrl=""></outline>
+      <outline text="The Police - Synchronicity" title="The Police - Synchronicity" type="rss" xmlUrl="https://laratliff-dev.github.io/daily-album-rss/" htmlUrl=""></outline>
+      <outline text="Red Cube by Isamu Noguchi (1968)" title="Red Cube by Isamu Noguchi (1968)" type="rss" xmlUrl="https://laratliff-dev.github.io/daily-art-rss/" htmlUrl=""></outline>
+      <outline text="hello&apos;s &apos;📡 RSS&apos; Interest on Scour Today" title="hello&apos;s &apos;📡 RSS&apos; Interest on Scour Today" type="rss" xmlUrl="https://scour.ing/@hello/interests/RSS/rss.xml?show_seen=true" htmlUrl=""></outline>
+      <outline text="Repository Releases Feed" title="Repository Releases Feed" type="rss" xmlUrl="https://rafpaz.github.io/repo-rss-feed/feed.xml" htmlUrl=""></outline>
+      <outline text="Splunk Apps" title="Splunk Apps" type="rss" xmlUrl="https://splunkbase.splunk.com/apps/rss/" htmlUrl=""></outline>
+      <outline text="TechCrunch" title="TechCrunch" type="rss" xmlUrl="https://raw.githubusercontent.com/gqcao/rss_bot/refs/heads/main/channels/techcrunch.xml" htmlUrl=""></outline>
+    </outline>
+    <outline text="anyrss" title="anyrss">
+      <outline text="Upstox News" title="Upstox News" type="rss" xmlUrl="https://anyrss.com/hrNKiX4AqOm" htmlUrl=""></outline>
+      <outline text="Manorama Online - Latest News" title="Manorama Online - Latest News" type="rss" xmlUrl="https://anyrss.com/ch5yWWy7mWO" htmlUrl=""></outline>
+      <outline text="Stay Informed with MarketsMojo News: Stock Market Insights, Portfolio Tracking, Alerts, and Expert Analyses" title="Stay Informed with MarketsMojo News: Stock Market Insights, Portfolio Tracking, Alerts, and Expert Analyses" type="rss" xmlUrl="https://anyrss.com/9AHfPklgFRZ" htmlUrl=""></outline>
+      <outline text="Dalal Street Investment Journal" title="Dalal Street Investment Journal" type="rss" xmlUrl="https://anyrss.com/fh3PY4yAuwN" htmlUrl=""></outline>
+    </outline>
+    <outline text="Noise" title="Noise">
+      <outline text="Civitai - Newest Images" title="Civitai - Newest Images" type="rss" xmlUrl="https://script.google.com/macros/s/AKfycbzWmuUbm3um3vIkIZrbVNkuj8SO6dMl9K7PLgfpSEPRrekWcA1toURB2srse4UqyGyX/exec?feed=civitai_pmpt" htmlUrl=""></outline>
+    </outline>
+    <outline text="Podcast" title="Podcast">
+      <outline text="Data Skeptic AI" title="Data Skeptic AI" type="rss" xmlUrl="https://rss.art19.com/data-skeptic-ai" htmlUrl=""></outline>
+      <outline text="Last Week in AI" title="Last Week in AI" type="rss" xmlUrl="https://lastweekin.ai/feed" htmlUrl=""></outline>
+      <outline text="Marketplace Tech" title="Marketplace Tech" type="rss" xmlUrl="https://feeds.publicradio.org/public_feeds/marketplace-tech" htmlUrl=""></outline>
+    </outline>
+  </body>
+</opml>
