@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 import type { D1Database } from '@cloudflare/workers-types'
+import { cors } from 'hono/cors'
 
 // Local env type — avoids circular import with index.ts
 interface CompatEnv {
@@ -11,6 +12,12 @@ interface CompatEnv {
 
 export const miniflux = new Hono<{ Bindings: CompatEnv }>()
 
+// ── CORS for browser-based clients (ReactFlux etc) ───────────────────────────
+miniflux.use('/v1/*', cors({
+  origin: '*',
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowHeaders: ['Content-Type', 'X-Auth-Token', 'Authorization'],
+}))
 // ── Auth helper ──────────────────────────────────────────────────────────────
 
 function verifyAuth(c: any): boolean {
