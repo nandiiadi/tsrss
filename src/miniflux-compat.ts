@@ -240,13 +240,17 @@ miniflux.post('/v1/categories', async (c) => {
   if (!verifyAuth(c)) return unauth(c)
   const { title } = await c.req.json<{ title: string }>()
   const now = new Date().toISOString()
-  const result = await c.env.DB.prepare(`
+  
+  // Removed "const result = " since it is unused
+  await c.env.DB.prepare(`
     INSERT INTO categories (user_id, title, created_at, sort_order)
     VALUES ('anonymous', ?, ?, 0)
   `).bind(title, now).run()
+  
   const row = await c.env.DB.prepare(
     "SELECT id, title FROM categories WHERE rowid = last_insert_rowid()"
   ).first<{ id: number; title: string }>()
+  
   return c.json({ id: row?.id, title: row?.title, user_id: 1, hide_globally: false }, 201)
 })
 
