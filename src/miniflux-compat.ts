@@ -18,6 +18,7 @@ miniflux.use('/v1/*', cors({
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'X-Auth-Token', 'Authorization'],
 }))
+
 // ── Auth helper ──────────────────────────────────────────────────────────────
 
 function verifyAuth(c: any): boolean {
@@ -44,6 +45,16 @@ function verifyAuth(c: any): boolean {
 function unauth(c: any) {
   return c.json({ error_message: 'Access Unauthorized', error_type: 'unauthorized' }, 401)
 }
+
+// ── GET /v1/version ──────────────────────────────────────────────────────────
+
+miniflux.get('/v1/version', (c) => {
+  return c.json({
+    version: '2.2.0',
+    commit: 'tsrss-compat',
+    build_date: '2026-01-01T00:00:00Z',
+  })
+})
 
 // ── GET /v1/me ───────────────────────────────────────────────────────────────
 
@@ -92,7 +103,7 @@ miniflux.get('/v1/categories', async (c) => {
     "SELECT id, title FROM categories WHERE user_id = 'anonymous' ORDER BY sort_order ASC"
   ).all<{ id: number; title: string }>()
   return c.json(
-    (rows.results || []).map(r => ({ id: r.id, title: r.title, user_id: 1 }))
+    (rows.results || []).map(r => ({ id: r.id, title: r.title, user_id: 1, hide_globally: false }))
   )
 })
 
@@ -108,6 +119,33 @@ miniflux.get('/v1/feeds', async (c) => {
     ORDER BY f.sort_order ASC
   `).all<any>()
   return c.json((rows.results || []).map(feedToMiniflux))
+})
+
+// ── GET /v1/feeds/counters — MUST be before /v1/feeds/:id ────────────────────
+
+miniflux.get('/v1/feeds/counters', async (c) => {
+  if (!verifyAuth(c)) return unauth(c)
+
+  const rows = await c.env.DB.prepare(`
+    SELECT a.feed_id,
+      SUM(CASE WHEN COALESCE(s.is_read, 0) = 0 THEN 1 ELSE 0 END) as unread,
+      SUM(CASE WHEN s.is_read = 1 THEN 1 ELSE 0 END) as read_count
+    FROM articles a
+    JOIN feeds f ON f.id = a.feed_id
+    LEFT JOIN article_states s ON s.article_id = a.id AND s.user_id = 'anonymous'
+    WHERE f.user_id = 'anonymous'
+    GROUP BY a.feed_id
+  `).all<{ feed_id: number; unread: number; read_count: number }>()
+
+  const unreads: Record<string, number> = {}
+  const reads: Record<string, number> = {}
+
+  for (const row of rows.results || []) {
+    unreads[String(row.feed_id)] = row.unread || 0
+    reads[String(row.feed_id)]   = row.read_count || 0
+  }
+
+  return c.json({ reads, unreads })
 })
 
 // ── GET /v1/feeds/:id ────────────────────────────────────────────────────────
@@ -196,59 +234,23 @@ miniflux.put('/v1/entries/:id/bookmark', async (c) => {
 
   return new Response(null, { status: 204 })
 })
-// ── GET /v1/version ──────────────────────────────────────────────────────────
-
-miniflux.get('/v1/version', (c) => {
-  return c.json({
-    version: '2.2.0',
-    commit: 'tsrss-compat',
-    build_date: '2026-01-01T00:00:00Z',
-  })
-})
-
-// ── GET /v1/feeds/counters ────────────────────────────────────────────────────
-
-miniflux.get('/v1/feeds/counters', async (c) => {
-  if (!verifyAuth(c)) return unauth(c)
-
-  const rows = await c.env.DB.prepare(`
-    SELECT a.feed_id,
-      SUM(CASE WHEN COALESCE(s.is_read, 0) = 0 THEN 1 ELSE 0 END) as unread,
-      SUM(CASE WHEN s.is_read = 1 THEN 1 ELSE 0 END) as read_count
-    FROM articles a
-    JOIN feeds f ON f.id = a.feed_id
-    LEFT JOIN article_states s ON s.article_id = a.id AND s.user_id = 'anonymous'
-    WHERE f.user_id = 'anonymous'
-    GROUP BY a.feed_id
-  `).all<{ feed_id: number; unread: number; read_count: number }>()
-
-  const unreads: Record<string, number> = {}
-  const reads: Record<string, number> = {}
-
-  for (const row of rows.results || []) {
-    unreads[String(row.feed_id)] = row.unread || 0
-    reads[String(row.feed_id)]   = row.read_count || 0
-  }
-
-  return c.json({ reads, unreads })
-})
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 async function listEntries(c: any, feedId: number | null) {
   const db = c.env.DB as any
   const url = new URL(c.req.url)
-  const status    = url.searchParams.get('status')
-  const limit     = Math.min(Number(url.searchParams.get('limit')  || 100), 1000)
-  const offset    = Number(url.searchParams.get('offset') || 0)
-  const direction = url.searchParams.get('direction') === 'asc' ? 'ASC' : 'DESC'
+  const status     = url.searchParams.get('status')
+  const limit      = Math.min(Number(url.searchParams.get('limit')  || 100), 1000)
+  const offset     = Number(url.searchParams.get('offset') || 0)
+  const direction  = url.searchParams.get('direction') === 'asc' ? 'ASC' : 'DESC'
   const categoryId = url.searchParams.get('category_id')
 
   let where = "f.user_id = 'anonymous'"
   const params: any[] = []
 
-  if (feedId !== null)  { where += ' AND a.feed_id = ?';      params.push(feedId) }
-  if (categoryId)       { where += ' AND f.category_id = ?';  params.push(Number(categoryId)) }
+  if (feedId !== null)  { where += ' AND a.feed_id = ?';     params.push(feedId) }
+  if (categoryId)       { where += ' AND f.category_id = ?'; params.push(Number(categoryId)) }
   if (status === 'unread')       where += ' AND COALESCE(s.is_read, 0) = 0'
   else if (status === 'read')    where += ' AND s.is_read = 1'
   else if (status === 'starred') where += ' AND s.is_starred = 1'
@@ -306,7 +308,7 @@ function feedToMiniflux(f: any) {
     category: f.category_id
       ? { id: f.category_id, title: f.category_title || 'Uncategorized', user_id: 1, hide_globally: false }
       : { id: 0, title: 'Uncategorized', user_id: 1, hide_globally: false },
-    icon: null,
+    icon: { feed_id: f.id, icon_id: 0, external_icon_id: '' },
   }
 }
 
@@ -333,7 +335,7 @@ function articleToMiniflux(a: any) {
     ntfy_topic: '', pushover_enabled: false, pushover_priority: 0,
     proxy_url: '',
     category: { id: 0, title: 'Uncategorized', user_id: 1, hide_globally: false },
-    icon: null,
+    icon: { feed_id: a.feed_id, icon_id: 0, external_icon_id: '' },
   }
   return {
     id: a.id,
