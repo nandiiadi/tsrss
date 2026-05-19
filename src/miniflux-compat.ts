@@ -2,7 +2,7 @@ import { Hono } from 'hono'
 import type { D1Database } from '@cloudflare/workers-types'
 import { cors } from 'hono/cors'
 
-// Local env type — avoids circular import with index.ts
+// Local env type - avoids circular import with index.ts
 interface CompatEnv {
   DB: D1Database
   SESSIONS: KVNamespace
@@ -12,24 +12,22 @@ interface CompatEnv {
 
 export const miniflux = new Hono<{ Bindings: CompatEnv }>()
 
-// ── CORS for browser-based clients (ReactFlux etc) ───────────────────────────
+// CORS for browser-based clients (ReactFlux etc)
 miniflux.use('/v1/*', cors({
   origin: '*',
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'X-Auth-Token', 'Authorization'],
 }))
 
-// ── Auth helper ──────────────────────────────────────────────────────────────
+// Auth helper
 
 function verifyAuth(c: any): boolean {
   const password = c.env.TSRSS_PASSWORD as string | undefined
   if (!password) return true
 
-  // X-Auth-Token header
   const token = c.req.header('X-Auth-Token')
   if (token === password) return true
 
-  // Authorization: Basic header
   const auth = c.req.header('Authorization') || ''
   if (auth.startsWith('Basic ')) {
     try {
@@ -46,7 +44,7 @@ function unauth(c: any) {
   return c.json({ error_message: 'Access Unauthorized', error_type: 'unauthorized' }, 401)
 }
 
-// ── GET /v1/version ──────────────────────────────────────────────────────────
+// GET /v1/version
 
 miniflux.get('/v1/version', (c) => {
   return c.json({
@@ -56,7 +54,7 @@ miniflux.get('/v1/version', (c) => {
   })
 })
 
-// ── GET /v1/me ───────────────────────────────────────────────────────────────
+// GET /v1/me
 
 miniflux.get('/v1/me', (c) => {
   if (!verifyAuth(c)) return unauth(c)
@@ -95,7 +93,7 @@ miniflux.get('/v1/me', (c) => {
   })
 })
 
-// ── GET /v1/categories ───────────────────────────────────────────────────────
+// GET /v1/categories
 
 miniflux.get('/v1/categories', async (c) => {
   if (!verifyAuth(c)) return unauth(c)
@@ -107,7 +105,45 @@ miniflux.get('/v1/categories', async (c) => {
   )
 })
 
-// ── GET /v1/feeds ────────────────────────────────────────────────────────────
+// POST /v1/categories
+
+miniflux.post('/v1/categories', async (c) => {
+  if (!verifyAuth(c)) return unauth(c)
+  const { title } = await c.req.json<{ title: string }>()
+  const now = new Date().toISOString()
+  await c.env.DB.prepare(`
+    INSERT INTO categories (user_id, title, created_at, sort_order)
+    VALUES ('anonymous', ?, ?, 0)
+  `).bind(title, now).run()
+  const row = await c.env.DB.prepare(
+    "SELECT id, title FROM categories WHERE rowid = last_insert_rowid()"
+  ).first<{ id: number; title: string }>()
+  return c.json({ id: row?.id, title: row?.title, user_id: 1, hide_globally: false }, 201)
+})
+
+// PUT /v1/categories/:id
+
+miniflux.put('/v1/categories/:id', async (c) => {
+  if (!verifyAuth(c)) return unauth(c)
+  const id = Number(c.req.param('id'))
+  const { title } = await c.req.json<{ title: string }>()
+  await c.env.DB.prepare(
+    "UPDATE categories SET title = ? WHERE id = ? AND user_id = 'anonymous'"
+  ).bind(title, id).run()
+  return c.json({ id, title, user_id: 1, hide_globally: false })
+})
+
+// DELETE /v1/categories/:id
+
+miniflux.delete('/v1/categories/:id', async (c) => {
+  if (!verifyAuth(c)) return unauth(c)
+  await c.env.DB.prepare(
+    "DELETE FROM categories WHERE id = ? AND user_id = 'anonymous'"
+  ).bind(Number(c.req.param('id'))).run()
+  return new Response(null, { status: 204 })
+})
+
+// GET /v1/feeds
 
 miniflux.get('/v1/feeds', async (c) => {
   if (!verifyAuth(c)) return unauth(c)
@@ -121,11 +157,10 @@ miniflux.get('/v1/feeds', async (c) => {
   return c.json((rows.results || []).map(feedToMiniflux))
 })
 
-// ── GET /v1/feeds/counters — MUST be before /v1/feeds/:id ────────────────────
+// GET /v1/feeds/counters - MUST be before /v1/feeds/:id
 
 miniflux.get('/v1/feeds/counters', async (c) => {
   if (!verifyAuth(c)) return unauth(c)
-
   const rows = await c.env.DB.prepare(`
     SELECT a.feed_id,
       SUM(CASE WHEN COALESCE(s.is_read, 0) = 0 THEN 1 ELSE 0 END) as unread,
@@ -136,19 +171,22 @@ miniflux.get('/v1/feeds/counters', async (c) => {
     WHERE f.user_id = 'anonymous'
     GROUP BY a.feed_id
   `).all<{ feed_id: number; unread: number; read_count: number }>()
-
   const unreads: Record<string, number> = {}
   const reads: Record<string, number> = {}
-
   for (const row of rows.results || []) {
     unreads[String(row.feed_id)] = row.unread || 0
     reads[String(row.feed_id)]   = row.read_count || 0
   }
-
   return c.json({ reads, unreads })
 })
 
-// ── GET /v1/feeds/:id ────────────────────────────────────────────────────────
+// GET /v1/feeds/:id/icon - MUST be before /v1/feeds/:id
+
+miniflux.get('/v1/feeds/:id/icon', (c) => {
+  return c.json({ id: 0, data: '', mime_type: 'image/x-icon' })
+})
+
+// GET /v1/feeds/:id
 
 miniflux.get('/v1/feeds/:id', async (c) => {
   if (!verifyAuth(c)) return unauth(c)
@@ -161,100 +199,7 @@ miniflux.get('/v1/feeds/:id', async (c) => {
   return c.json(feedToMiniflux(row))
 })
 
-// ── GET /v1/entries ──────────────────────────────────────────────────────────
-
-miniflux.get('/v1/entries', async (c) => {
-  if (!verifyAuth(c)) return unauth(c)
-  return listEntries(c, null)
-})
-
-// ── GET /v1/feeds/:feedId/entries ────────────────────────────────────────────
-
-miniflux.get('/v1/feeds/:feedId/entries', async (c) => {
-  if (!verifyAuth(c)) return unauth(c)
-  return listEntries(c, Number(c.req.param('feedId')))
-})
-
-// ── GET /v1/entries/:id ──────────────────────────────────────────────────────
-
-miniflux.get('/v1/entries/:id', async (c) => {
-  if (!verifyAuth(c)) return unauth(c)
-  const row = await c.env.DB.prepare(`
-    SELECT a.*, f.title as feed_title, f.site_url as feed_site_url, f.url as feed_url,
-      COALESCE(s.is_read, 0) as is_read, COALESCE(s.is_starred, 0) as is_starred
-    FROM articles a
-    JOIN feeds f ON f.id = a.feed_id
-    LEFT JOIN article_states s ON s.article_id = a.id AND s.user_id = 'anonymous'
-    WHERE a.id = ?
-  `).bind(Number(c.req.param('id'))).first<any>()
-  if (!row) return c.json({ error_message: 'Entry not found', error_type: 'not_found' }, 404)
-  return c.json(articleToMiniflux(row))
-})
-
-// ── PUT /v1/entries — batch mark read/unread ─────────────────────────────────
-
-miniflux.put('/v1/entries', async (c) => {
-  if (!verifyAuth(c)) return unauth(c)
-  const body = await c.req.json<{ entry_ids: number[]; status: 'read' | 'unread' }>()
-  const { entry_ids, status } = body
-  if (!entry_ids?.length) return new Response(null, { status: 204 })
-
-  const isRead = status === 'read' ? 1 : 0
-  const now = new Date().toISOString()
-
-  for (const id of entry_ids) {
-    await c.env.DB.prepare(`
-      INSERT INTO article_states (user_id, article_id, is_read, is_starred, read_at, starred_at)
-      VALUES ('anonymous', ?, ?, 0, ?, NULL)
-      ON CONFLICT (user_id, article_id) DO UPDATE SET is_read = ?, read_at = ?
-    `).bind(id, isRead, isRead ? now : null, isRead, isRead ? now : null).run()
-  }
-
-  return new Response(null, { status: 204 })
-})
-
-// ── PUT /v1/entries/:id/bookmark — toggle star ───────────────────────────────
-
-miniflux.put('/v1/entries/:id/bookmark', async (c) => {
-  if (!verifyAuth(c)) return unauth(c)
-  const id = Number(c.req.param('id'))
-  const now = new Date().toISOString()
-
-  const existing = await c.env.DB.prepare(
-    "SELECT is_starred FROM article_states WHERE user_id = 'anonymous' AND article_id = ?"
-  ).bind(id).first<{ is_starred: number }>()
-
-  const newStarred = existing ? (existing.is_starred ? 0 : 1) : 1
-
-  await c.env.DB.prepare(`
-    INSERT INTO article_states (user_id, article_id, is_read, is_starred, read_at, starred_at)
-    VALUES ('anonymous', ?, 0, ?, NULL, ?)
-    ON CONFLICT (user_id, article_id) DO UPDATE SET is_starred = ?, starred_at = ?
-  `).bind(id, newStarred, newStarred ? now : null, newStarred, newStarred ? now : null).run()
-
-  return new Response(null, { status: 204 })
-})
-// ── POST /v1/categories ───────────────────────────────────────────────────────
-
-miniflux.post('/v1/categories', async (c) => {
-  if (!verifyAuth(c)) return unauth(c)
-  const { title } = await c.req.json<{ title: string }>()
-  const now = new Date().toISOString()
-  
-  // Removed "const result = " since it is unused
-  await c.env.DB.prepare(`
-    INSERT INTO categories (user_id, title, created_at, sort_order)
-    VALUES ('anonymous', ?, ?, 0)
-  `).bind(title, now).run()
-  
-  const row = await c.env.DB.prepare(
-    "SELECT id, title FROM categories WHERE rowid = last_insert_rowid()"
-  ).first<{ id: number; title: string }>()
-  
-  return c.json({ id: row?.id, title: row?.title, user_id: 1, hide_globally: false }, 201)
-})
-
-// ── POST /v1/feeds ────────────────────────────────────────────────────────────
+// POST /v1/feeds
 
 miniflux.post('/v1/feeds', async (c) => {
   if (!verifyAuth(c)) return unauth(c)
@@ -271,7 +216,31 @@ miniflux.post('/v1/feeds', async (c) => {
   return c.json(feedToMiniflux(row), 201)
 })
 
-// ── DELETE /v1/feeds/:id ──────────────────────────────────────────────────────
+// PUT /v1/feeds/:id
+
+miniflux.put('/v1/feeds/:id', async (c) => {
+  if (!verifyAuth(c)) return unauth(c)
+  const id = Number(c.req.param('id'))
+  const body = await c.req.json<{ title?: string; category_id?: number }>()
+  if (body.title) {
+    await c.env.DB.prepare(
+      "UPDATE feeds SET title = ? WHERE id = ? AND user_id = 'anonymous'"
+    ).bind(body.title, id).run()
+  }
+  if (body.category_id) {
+    await c.env.DB.prepare(
+      "UPDATE feeds SET category_id = ? WHERE id = ? AND user_id = 'anonymous'"
+    ).bind(body.category_id, id).run()
+  }
+  const row = await c.env.DB.prepare(`
+    SELECT f.*, c.title as category_title
+    FROM feeds f LEFT JOIN categories c ON c.id = f.category_id
+    WHERE f.id = ?
+  `).bind(id).first<any>()
+  return c.json(feedToMiniflux(row))
+})
+
+// DELETE /v1/feeds/:id
 
 miniflux.delete('/v1/feeds/:id', async (c) => {
   if (!verifyAuth(c)) return unauth(c)
@@ -280,7 +249,74 @@ miniflux.delete('/v1/feeds/:id', async (c) => {
   return new Response(null, { status: 204 })
 })
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
+// GET /v1/entries
+
+miniflux.get('/v1/entries', async (c) => {
+  if (!verifyAuth(c)) return unauth(c)
+  return listEntries(c, null)
+})
+
+// GET /v1/feeds/:feedId/entries
+
+miniflux.get('/v1/feeds/:feedId/entries', async (c) => {
+  if (!verifyAuth(c)) return unauth(c)
+  return listEntries(c, Number(c.req.param('feedId')))
+})
+
+// GET /v1/entries/:id
+
+miniflux.get('/v1/entries/:id', async (c) => {
+  if (!verifyAuth(c)) return unauth(c)
+  const row = await c.env.DB.prepare(`
+    SELECT a.*, f.title as feed_title, f.site_url as feed_site_url, f.url as feed_url,
+      COALESCE(s.is_read, 0) as is_read, COALESCE(s.is_starred, 0) as is_starred
+    FROM articles a
+    JOIN feeds f ON f.id = a.feed_id
+    LEFT JOIN article_states s ON s.article_id = a.id AND s.user_id = 'anonymous'
+    WHERE a.id = ?
+  `).bind(Number(c.req.param('id'))).first<any>()
+  if (!row) return c.json({ error_message: 'Entry not found', error_type: 'not_found' }, 404)
+  return c.json(articleToMiniflux(row))
+})
+
+// PUT /v1/entries - batch mark read/unread
+
+miniflux.put('/v1/entries', async (c) => {
+  if (!verifyAuth(c)) return unauth(c)
+  const body = await c.req.json<{ entry_ids: number[]; status: 'read' | 'unread' }>()
+  const { entry_ids, status } = body
+  if (!entry_ids?.length) return new Response(null, { status: 204 })
+  const isRead = status === 'read' ? 1 : 0
+  const now = new Date().toISOString()
+  for (const id of entry_ids) {
+    await c.env.DB.prepare(`
+      INSERT INTO article_states (user_id, article_id, is_read, is_starred, read_at, starred_at)
+      VALUES ('anonymous', ?, ?, 0, ?, NULL)
+      ON CONFLICT (user_id, article_id) DO UPDATE SET is_read = ?, read_at = ?
+    `).bind(id, isRead, isRead ? now : null, isRead, isRead ? now : null).run()
+  }
+  return new Response(null, { status: 204 })
+})
+
+// PUT /v1/entries/:id/bookmark - toggle star
+
+miniflux.put('/v1/entries/:id/bookmark', async (c) => {
+  if (!verifyAuth(c)) return unauth(c)
+  const id = Number(c.req.param('id'))
+  const now = new Date().toISOString()
+  const existing = await c.env.DB.prepare(
+    "SELECT is_starred FROM article_states WHERE user_id = 'anonymous' AND article_id = ?"
+  ).bind(id).first<{ is_starred: number }>()
+  const newStarred = existing ? (existing.is_starred ? 0 : 1) : 1
+  await c.env.DB.prepare(`
+    INSERT INTO article_states (user_id, article_id, is_read, is_starred, read_at, starred_at)
+    VALUES ('anonymous', ?, 0, ?, NULL, ?)
+    ON CONFLICT (user_id, article_id) DO UPDATE SET is_starred = ?, starred_at = ?
+  `).bind(id, newStarred, newStarred ? now : null, newStarred, newStarred ? now : null).run()
+  return new Response(null, { status: 204 })
+})
+
+// Helpers
 
 async function listEntries(c: any, feedId: number | null) {
   const db = c.env.DB as any
