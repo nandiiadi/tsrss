@@ -1,9 +1,6 @@
 import { Hono } from 'hono'
 import type { D1Database } from '@cloudflare/workers-types'
 import { cors } from 'hono/cors'
-// @ts-ignore
-import Parser from '@jocmp/mercury-parser'
-
 // Local env type - avoids circular import with index.ts
 interface CompatEnv {
   DB: D1Database
@@ -279,11 +276,7 @@ miniflux.get('/v1/entries/:id/fetch-content', async (c) => {
       redirect: 'follow',
     })
     const html = await res.text()
-    const result = await Parser.parse(row.url, {
-      html,
-      contentType: 'html',
-    })
-    return c.json({ content: result.content || row.content || row.summary || '' })
+    return c.json({ content: extractArticle(html) })
   } catch {
     return c.json({ content: row.content || row.summary || '' })
   }
@@ -343,6 +336,31 @@ miniflux.put('/v1/entries/:id/bookmark', async (c) => {
 })
 
 // Helpers
+
+function extractArticle(html: string): string {
+  let s = html
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/<style[\s\S]*?<\/style>/gi, '')
+    .replace(/<nav[\s\S]*?<\/nav>/gi, '')
+    .replace(/<header[\s\S]*?<\/header>/gi, '')
+    .replace(/<footer[\s\S]*?<\/footer>/gi, '')
+    .replace(/<aside[\s\S]*?<\/aside>/gi, '')
+    .replace(/<!--[\s\S]*?-->/g, '')
+
+  const article = s.match(/<article[\s\S]*?<\/article>/i)
+  if (article) return article[0]
+
+  const main = s.match(/<main[\s\S]*?<\/main>/i)
+  if (main) return main[0]
+
+  const contentDiv = s.match(/<div[^>]+(?:class|id)="[^"]*(?:article|post|entry|content|story|body)[^"]*"[\s\S]*?<\/div>/i)
+  if (contentDiv) return contentDiv[0]
+
+  const body = s.match(/<body[\s\S]*?<\/body>/i)
+  if (body) return body[0]
+
+  return s
+}
 
 async function listEntries(c: any, feedId: number | null) {
   const db = c.env.DB as any
