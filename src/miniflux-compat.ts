@@ -262,15 +262,25 @@ miniflux.get('/v1/feeds/:feedId/entries', async (c) => {
   if (!verifyAuth(c)) return unauth(c)
   return listEntries(c, Number(c.req.param('feedId')))
 })
-// GET /v1/entries/:id/fetch-content
+
+// GET /v1/entries/:id/fetch-content - MUST be before /v1/entries/:id
 
 miniflux.get('/v1/entries/:id/fetch-content', async (c) => {
   if (!verifyAuth(c)) return unauth(c)
-  const row = await c.env.DB.prepare(`
-    SELECT content, summary FROM articles WHERE id = ?
-  `).bind(Number(c.req.param('id'))).first<{ content: string; summary: string }>()
+  const row = await c.env.DB.prepare(
+    'SELECT url, content, summary FROM articles WHERE id = ?'
+  ).bind(Number(c.req.param('id'))).first<{ url: string; content: string; summary: string }>()
   if (!row) return c.json({ error_message: 'Entry not found', error_type: 'not_found' }, 404)
-  return c.json({ content: row.content || row.summary || '' })
+  try {
+    const res = await fetch(row.url, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; RSS Reader Bot/1.0)' },
+      redirect: 'follow',
+    })
+    const html = await res.text()
+    return c.json({ content: html })
+  } catch {
+    return c.json({ content: row.content || row.summary || '' })
+  }
 })
 
 // GET /v1/entries/:id
