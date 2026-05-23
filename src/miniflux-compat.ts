@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import type { D1Database } from '@cloudflare/workers-types'
 import { cors } from 'hono/cors'
+// @ts-ignore
 import Parser from '@jocmp/mercury-parser'
 
 // Local env type - avoids circular import with index.ts
