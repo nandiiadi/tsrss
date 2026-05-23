@@ -262,6 +262,16 @@ miniflux.get('/v1/feeds/:feedId/entries', async (c) => {
   if (!verifyAuth(c)) return unauth(c)
   return listEntries(c, Number(c.req.param('feedId')))
 })
+// GET /v1/entries/:id/fetch-content
+
+miniflux.get('/v1/entries/:id/fetch-content', async (c) => {
+  if (!verifyAuth(c)) return unauth(c)
+  const row = await c.env.DB.prepare(`
+    SELECT content, summary FROM articles WHERE id = ?
+  `).bind(Number(c.req.param('id'))).first<{ content: string; summary: string }>()
+  if (!row) return c.json({ error_message: 'Entry not found', error_type: 'not_found' }, 404)
+  return c.json({ content: row.content || row.summary || '' })
+})
 
 // GET /v1/entries/:id
 
